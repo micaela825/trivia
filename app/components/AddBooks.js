@@ -2,7 +2,7 @@
 // CAN ADD FILTERED BOOKS TO STORE SO IT'LL BE ACCESSIBLE EVERYWHERE - create a dispatch similar to fetchBooks
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import { connect } from "react-redux";
 import { fetchBooks } from "../reducers/index";
 import SingleBook from "./SingleBook";
