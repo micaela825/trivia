@@ -2,7 +2,7 @@
   "name": "book-search",
   "version": "1.0.0",
   "description": "Book search app",
-  "main": "main.js",
+  "main": "node main.js",
   "scripts": {
     "start:dev": "npm run build-watch & npm run start-server",
     "start-server": "nodemon --watch server main.js -e html,js,css",

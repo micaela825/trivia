@@ -1,27 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-// import Students from "./students";
-// import SingleStudent from "./SingleStudent";
+import SingleBook from "./SingleBook";
 import AddBooks from "./AddBooks";
+import store from "../store";
 
 const Root = () => {
   return (
     <Router>
       <div>
-        <nav>
-          Welcome!
-          {/* <Link to="/students">
-            <button text="search">Search</button>
-          </Link> */}
-          <Link to="/books">
-            <button text="search">books</button>
-          </Link>
-        </nav>
+        <header />
         <main>
           <h1>Welcome to the book search!</h1>
-          <Route exact path="/books" component={AddBooks} />
-          {/* <Route exact path="/students" component={Students} />
-          <Route exact path="/students/:studentId" component={SingleStudent} /> */}
+          <Route exact path="/" component={AddBooks} />
+          <Route path="/book/:isbn" component={SingleBook} />
         </main>
       </div>
     </Router>

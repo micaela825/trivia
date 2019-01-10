@@ -1,20 +1,14 @@
-// IDEAS - CAN FILTER DIRECTLY IN RENDER
-// CAN ADD FILTERED BOOKS TO STORE SO IT'LL BE ACCESSIBLE EVERYWHERE - create a dispatch similar to fetchBooks
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-// import axios from "axios";
 import { connect } from "react-redux";
 import { fetchBooks } from "../reducers/index";
-import SingleBook from "./SingleBook";
 
 class AddBooks extends Component {
   constructor() {
     super();
     this.state = {
       link: "",
-      filterTerm: "",
-      currentBooks: [],
-      filteredBooks: []
+      filterTerm: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,72 +29,78 @@ class AddBooks extends Component {
   }
 
   handleFilter(event) {
-    console.log("STATE IN HANDLE CLICK FOR FILTER", this.state);
-    //let filteredBooks = [];
-    // this.props.books.map(book =>
-    //   book.has_fulltext === true ? filteredBooks.push(book) : null
-    // );
-    //this.setState({ filteredBooks: filteredBooks });
-    // REFACTOR THIS SO VALUE IS EQUAL TO PROPERTY VALUE IN DATA
-    if (event.target.value === "fullText") {
-      this.setState({ filterTerm: "has_fulltext" });
-    }
+    this.setState({
+      filterTerm: event.target.value
+    });
   }
 
   handleSubmit(event) {
     event.preventDefault();
     let searchTerm = this.linkify(this.state.link);
-    this.props.fetchBooks(searchTerm); // axios backend
-    // this.props.addingStudent(this.state); // front end
+    this.props.fetchBooks(searchTerm);
     this.setState({
       link: event.target.value
     });
   }
 
   render() {
-    //console.log("STATE in render", this.state);
-    //console.log("PROPS in render", this.props);
-    let currentBooks = this.props.books;
-    // let currentBooks = [];
-    // this.state.filteredBooks.length > 0
-    //   ? (currentBooks = this.state.filteredBooks)
-    //   : (currentBooks = this.props.books);
-    // if (this.state.filterTerm) {
-    //   console.log("FILTER TERM IN RENDER", this.state.filterTerm);
-    // }
+    let currentBooks = [];
+    let filterTerm = this.state.filterTerm;
+
+    if (this.props.books.docs && filterTerm == "ebook_count_i") {
+      currentBooks = this.props.books.docs.filter(book => {
+        return book[filterTerm] >= 1;
+      });
+    } else if (this.props.books.docs && filterTerm == "has_fulltext") {
+      currentBooks = this.props.books.docs.filter(book => {
+        return book[filterTerm] === true;
+      });
+    } else if (this.props.books.docs && filterTerm == "eng") {
+      currentBooks = this.props.books.docs.filter(book => {
+        if (book.language) {
+          return book.language.includes("eng");
+        }
+      });
+    } else {
+      currentBooks = this.props.books.docs;
+    }
 
     return (
       <div>
-        <select onChange={this.handleFilter}>
-          <option>All</option>
-          <option value="english">English only</option>
-          <option value="fullText">Full text available</option>
-          <option value="eBook">E-book</option>
-          ))}
-        </select>
+        <span>Filter:</span>
+        <span>
+          <select onChange={this.handleFilter}>
+            <option>All</option>
+            <option value="eng">English only</option>
+            <option value="has_fulltext">Full text available</option>
+            <option value="ebook_count_i">E-book available</option>
+            ))}
+          </select>
+        </span>
 
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="name">Book title:</label>
+          <label htmlFor="search">Search book by title:</label>
           <input
             type="text"
             name="title"
             //   value={this.state.books}
             onChange={this.handleChange}
           />
-          <button type="submit">Submit</button>
+          <button type="submit">Search</button>
         </form>
         {this.props.books.numFound ? (
           <div>
-            <h1>Your search returned {currentBooks.numFound} results. </h1>
+            <h3>Your search returned {currentBooks.length} results. </h3>
             <div>
-              {currentBooks.docs.map((book, i) => (
+              {currentBooks.map((book, i) => (
                 <div key={i}>
-                  {book.title} : {book.author_name} : {book.ebook_count_i}
-                  {/* <SingleBook book={book} /> */}
-                  {/* <Link to={`/students/${student.id}`}>
-                    <h4>{student.firstname + " " + student.lastName}</h4>
-                    <img src={student.imageUrl} />
-                  </Link> */}
+                  {book.isbn ? (
+                    <Link to={`/book/${book.isbn[0]}`}>
+                      <h4>{book.title}</h4>
+                    </Link>
+                  ) : (
+                    book.title
+                  )}
                 </div>
               ))}
             </div>

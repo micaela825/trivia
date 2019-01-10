@@ -3,21 +3,18 @@
   font-family: arial, sans-serif;
 }
 
+header {
+  background-image: url(books.jpg);
+  height: 150px;
+  width: 100%;
+}
+
 body {
-  background: linear-gradient(#ffffff, #c0c0c0);
+  background: blanchedalmond;
   height: 100vh;
   padding: 0;
   margin: 0;
   width: 100vw;
-}
-
-nav {
-  align-items: center;
-  background-color: #333333;
-  color: #c0c0c0;
-  display: flex;
-  height: 80px;
-  padding: 10px;
 }
 
 main {

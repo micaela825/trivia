@@ -1,40 +1,24 @@
 const initialState = {
-  // students: [],
-  // student: {},
-  books: []
+  books: [],
+  bookDetails: {}
 };
 
-// ACTION CREATOR:
-
-// export const FETCHED_STUDENTS = "FETCHED_STUDENTS";
-// export const FETCHED_SINGLE_STUDENT = "FETCHED_SINGLE_STUDENT";
-// export const ADDED_STUDENT = "ADDED_STUDENT";
+// ACTION CREATORS:
 export const FETCHED_BOOKS = "FETCHED_BOOKS";
+export const FETCHED_BOOK_DETAILS = "FETCHED_BOOK_DETAILS";
 
 // ACTIONS:
-
 export const gotAllBooks = books => ({
   type: FETCHED_BOOKS,
   books: books
 });
 
-// export const gotAllStudents = students => ({
-//   type: FETCHED_STUDENTS,
-//   students: students
-// });
+export const gotBookDetails = bookDetails => ({
+  type: FETCHED_BOOK_DETAILS,
+  bookDetails: bookDetails
+});
 
-// export const gotSingleStudent = student => ({
-//   type: FETCHED_SINGLE_STUDENT,
-//   student: student
-// });
-
-// export const gotAddedStudent = student => ({
-//   type: ADDED_STUDENT,
-//   student: student
-// });
-
-// THUNK CREATOR:
-
+// THUNKS:
 export const fetchBooks = searchTerm => {
   return async (dispatch, getState, { axios }) => {
     const response = await axios.get(searchTerm);
@@ -44,47 +28,22 @@ export const fetchBooks = searchTerm => {
   };
 };
 
-// export const fetchStudents = () => {
-//   return async (dispatch, getState, { axios }) => {
-//     const response = await axios.get(`/api/students`);
-//     const students = response.data;
-//     const action = gotAllStudents(students);
-//     dispatch(action);
-//   };
-// };
+export const fetchBookDetails = isbnLink => {
+  return async (dispatch, getState, { axios }) => {
+    const response = await axios.get(isbnLink);
+    const details = response.data;
+    const action = gotBookDetails(details);
+    dispatch(action);
+  };
+};
 
-// export const fetchStudent = studentId => {
-//   return async (dispatch, getState, { axios }) => {
-//     const response = await axios.get(`/api/students/${studentId}`);
-//     const student = response.data;
-//     const action = gotSingleStudent(student);
-//     dispatch(action);
-//   };
-// };
-
-// ADDING STUDENT
-// export const addStudent = student => {
-//   return async (dispatch, getState, { axios }) => {
-//     try {
-//       const { data } = await axios.post("/api/students", student);
-//       dispatch(gotAddedStudent(data));
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-// };
-
+// REDUCER:
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCHED_BOOKS:
       return { ...state, books: action.books };
-    // case FETCHED_STUDENTS:
-    //   return { ...state, students: action.students };
-    // case FETCHED_SINGLE_STUDENT:
-    //   return { ...state, student: action.student };
-    // case ADDED_STUDENT:
-    //   return { ...state, student: action.student };
-
+    case FETCHED_BOOK_DETAILS:
+      return { ...state, bookDetails: action.bookDetails };
     default:
       return state;
   }
