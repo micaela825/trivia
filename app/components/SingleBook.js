@@ -19,6 +19,7 @@ class SingleBook extends Component {
   }
 
   componentDidMount() {
+    let isbn = this.props.match.params.isbn;
     let detailsLink = this.makeIsbnLink(this.props.match.params.isbn);
     this.props.fetchBookDetails(detailsLink);
   }
@@ -26,26 +27,18 @@ class SingleBook extends Component {
   render() {
     let isbn = this.props.match.params.isbn;
     let coverlink = this.makeCoverLink(isbn);
-    if (this.props.bookDetails.length) {
-      console.log("props in single book render", this.props);
-      let title = this.props.bookDetails.details.title;
-      let subject = this.props.bookDetails.details.subjects[0];
-      let pages = this.props.bookDetails.details.number_of_pages;
-      let author = this.props.bookDetails.details.authors[0].name;
-      let thumbnail = this.props.bookDetails.thumbnail_url;
+    let isbnProp = "ISBN:" + isbn;
+    if (this.props.bookDetails[isbnProp]) {
+      console.log("prop details", this.props.bookDetails[isbnProp].details);
+      let detailss = this.props.bookDetails[isbnProp].details;
     }
 
     return (
       <div>
-        {this.props.bookDetails ? (
-          <div>
-            <div>title: {this.title}</div>
-            <div>subject: {this.subject}</div>
-            <div>pages: {this.pages}</div>
-            <div>author: {this.author}</div>
-            <img src={this.thumbnail} />
-            <img src={this.coverlink} />
-          </div>
+        <img src={this.coverlink} />
+
+        {this.props.bookDetails[isbnProp] ? (
+          <div>title: {this.props.bookDetails[isbnProp].details.title}</div>
         ) : null}
       </div>
     );
