@@ -80,18 +80,13 @@ class AddBooks extends Component {
 
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="search">Search book by title:</label>
-          <input
-            type="text"
-            name="title"
-            //   value={this.state.books}
-            onChange={this.handleChange}
-          />
+          <input type="text" name="title" onChange={this.handleChange} />
           <button type="submit">Search</button>
         </form>
         {this.props.books.numFound ? (
           <div>
             <h3>Your search returned {currentBooks.length} results. </h3>
-            <div>
+            <div className="returnResults">
               {currentBooks.map((book, i) => (
                 <div key={i}>
                   {book.isbn ? (

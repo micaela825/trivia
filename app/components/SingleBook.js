@@ -26,20 +26,41 @@ class SingleBook extends Component {
 
   render() {
     let isbn = this.props.match.params.isbn;
-    let coverlink = this.makeCoverLink(isbn);
     let isbnProp = "ISBN:" + isbn;
-    if (this.props.bookDetails[isbnProp]) {
-      console.log("prop details", this.props.bookDetails[isbnProp].details);
-      let detailss = this.props.bookDetails[isbnProp].details;
-    }
 
     return (
       <div>
-        <img src={this.coverlink} />
+        <div>
+          {this.props.bookDetails[isbnProp] ? (
+            this.props.bookDetails[isbnProp].details.title ? (
+              <div className="returnResults">
+                Title: {this.props.bookDetails[isbnProp].details.title}
+              </div>
+            ) : null
+          ) : null}
 
-        {this.props.bookDetails[isbnProp] ? (
-          <div>title: {this.props.bookDetails[isbnProp].details.title}</div>
-        ) : null}
+          <div>
+            <img src={this.makeCoverLink(isbn)} />
+          </div>
+          {this.props.bookDetails[isbnProp] ? (
+            this.props.bookDetails[isbnProp].details.description ? (
+              <div className="returnResults">
+                Description:{" "}
+                {this.props.bookDetails[isbnProp].details.description}
+              </div>
+            ) : (
+              <div>No description available.</div>
+            )
+          ) : null}
+          {this.props.bookDetails[isbnProp] ? (
+            this.props.bookDetails[isbnProp].details.authors ? (
+              <div className="returnResults">
+                Author:{" "}
+                {this.props.bookDetails[isbnProp].details.authors[0].name}
+              </div>
+            ) : null
+          ) : null}
+        </div>
       </div>
     );
   }
