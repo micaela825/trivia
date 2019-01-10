@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import SingleBook from "./SingleBook";
-import AddBooks from "./AddBooks";
+import AllBooks from "./AllBooks";
 
 const Root = () => {
   return (
@@ -15,7 +15,7 @@ const Root = () => {
         </nav>
         <main>
           <h1>Find a book!</h1>
-          <Route exact path="/" component={AddBooks} />
+          <Route exact path="/" component={AllBooks} />
           <Route path="/book/:isbn" component={SingleBook} />
         </main>
       </div>

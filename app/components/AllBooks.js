@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchBooks } from "../reducers/index";
 
-class AddBooks extends Component {
+class AllBooks extends Component {
   constructor() {
     super();
     this.state = {
@@ -41,6 +41,7 @@ class AddBooks extends Component {
     this.setState({
       link: event.target.value
     });
+    this.refs.bookName.value = "";
   }
 
   render() {
@@ -80,7 +81,7 @@ class AddBooks extends Component {
 
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="search">Search book by title:</label>
-          <input type="text" name="title" onChange={this.handleChange} />
+          <input ref="bookName" onChange={this.handleChange} />
           <button type="submit">Search</button>
         </form>
         {this.props.books.numFound ? (
@@ -121,4 +122,4 @@ const mapDispatch = dispatch => {
 export default connect(
   mapState,
   mapDispatch
-)(AddBooks);
+)(AllBooks);
