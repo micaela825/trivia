@@ -16,6 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 // static middleware
 app.use(express.static(path.join(__dirname, "../public")));
 
+app.all("*", (req, res, next) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });

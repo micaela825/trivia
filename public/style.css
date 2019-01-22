@@ -1,20 +1,37 @@
+/* container */
+
 * {
   box-sizing: border-box;
   font-family: arial, sans-serif;
 }
 
-header {
-  background-image: url(books.jpg);
-  height: 150px;
-  width: 100%;
-}
-
 body {
-  background: blanchedalmond;
+  z-index: 1;
   height: 100vh;
   padding: 0;
   margin: 0;
   width: 100vw;
+}
+
+/* header */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-image: url(NM.jpg);
+}
+
+/* nav */
+nav {
+  width: 100%;
+}
+
+nav button {
+  font-size: 12px;
+}
+
+.home {
+  color: fuchsia;
 }
 
 button {
@@ -27,14 +44,11 @@ button {
   font-weight: bold;
 }
 
-.home {
-  width: 8%;
-}
-
 button:hover {
   background-color: lightsteelblue;
 }
 
+/* book search */
 input {
   border: none;
   border-radius: 10px;
@@ -55,7 +69,8 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 20px;
+  margin: 25%;
+  margin-top: 7%;
 }
 
 .returnResults {
