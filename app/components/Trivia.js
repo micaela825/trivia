@@ -13,28 +13,28 @@ class Trivia extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleShowAnswer = this.handleShowAnswer.bind(this);
-    // this.speak = this.speak.bind(this);
   }
 
   handleChange(event) {
-    console.log("state before handle change", this.state);
     this.setState({
       answer: event.target.value
     });
-    console.log("state after handle change **", this.state);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("state before handle submit", this.state);
     this.setState({
       answer: event.target.value
     });
-    console.log("state after handle submit", this.state);
   }
-
   handleShowAnswer() {
-    let correct = this.props.trivia[0].answer;
+    console.log("props ****", this.props);
+    let correct;
+    if (this.props.trivia[0]) {
+      if (this.props.trivia[0].answer) {
+        correct = this.props.trivia[0].answer;
+      }
+    }
     this.setState({
       correct: correct,
       showAnswer: true
@@ -44,6 +44,7 @@ class Trivia extends Component {
   componentDidMount() {
     this.props.fetchTrivia();
   }
+
   render() {
     return (
       <div>
@@ -60,8 +61,12 @@ class Trivia extends Component {
           <input ref="answerName" onChange={this.handleChange} />
           <button type="submit">Guess!</button>
         </form>
-        <button onClick={this.handleShowAnswer()}>Show answer</button>
-        {this.state.showAnswer ? <p>this.state.answer</p> : null}
+        <button onClick={this.handleShowAnswer}>Show answer</button>
+        {this.state.showAnswer ? (
+          this.state.answer ? (
+            <p>this.state.answer</p>
+          ) : null
+        ) : null}
       </div>
     );
   }
