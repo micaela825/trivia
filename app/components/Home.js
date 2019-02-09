@@ -4,10 +4,6 @@ import { connect } from "react-redux";
 import { fetchQuote, fetchAdvice } from "../reducers/index";
 
 class Home extends Component {
-  constructor() {
-    super();
-  }
-
   componentDidMount() {
     this.props.fetchQuote();
     this.props.fetchAdvice();

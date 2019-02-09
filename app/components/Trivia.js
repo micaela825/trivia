@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchTrivia } from "../reducers/index";
 
@@ -7,12 +8,13 @@ class Trivia extends Component {
     super();
     this.state = {
       answer: "",
-      correct: "",
-      showAnswer: false
+      showAnswer: false,
+      displayMessage: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleShowAnswer = this.handleShowAnswer.bind(this);
+    this.refreshPage = this.refeshPage.bind(this);
   }
 
   handleChange(event) {
@@ -23,21 +25,28 @@ class Trivia extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.setState({
-      answer: event.target.value
-    });
-  }
-  handleShowAnswer() {
-    console.log("props ****", this.props);
-    let correct;
-    if (this.props.trivia[0]) {
-      if (this.props.trivia[0].answer) {
-        correct = this.props.trivia[0].answer;
+    let displayMessage;
+    // ADD MORE REFINED ALLOWANCES FOR RIGHT ANSWERS - ie .includes, startswith, etc.
+    if (this.props.trivia[0] && this.props.trivia[0].answer) {
+      if (
+        this.props.trivia[0].answer.toLowerCase() ===
+        this.state.answer.toLowerCase()
+      ) {
+        displayMessage = "got it right!";
+      } else {
+        displayMessage = "oops wrong answer";
       }
     }
     this.setState({
-      correct: correct,
-      showAnswer: true
+      answer: event.target.value,
+      displayMessage: displayMessage
+    });
+  }
+
+  handleShowAnswer() {
+    this.setState({
+      showAnswer: true,
+      displayMessage: "blank"
     });
   }
 
@@ -45,28 +54,50 @@ class Trivia extends Component {
     this.props.fetchTrivia();
   }
 
+  refeshPage() {
+    window.location.reload();
+  }
+
   render() {
     return (
       <div>
-        <div>Question:</div>
-        <div>
-          <br />
-          {this.props.trivia[0] ? (
-            <div>{this.props.trivia[0].question}</div>
-          ) : null}
-        </div>
+        {this.state.displayMessage ? (
+          this.state.showAnswer && this.props.trivia[0] ? (
+            this.props.trivia[0].answer ? (
+              <div>
+                <div>{this.props.trivia[0].answer}</div>
 
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="search">Answer:</label>
-          <input ref="answerName" onChange={this.handleChange} />
-          <button type="submit">Guess!</button>
-        </form>
-        <button onClick={this.handleShowAnswer}>Show answer</button>
-        {this.state.showAnswer ? (
-          this.state.answer ? (
-            <p>this.state.answer</p>
-          ) : null
-        ) : null}
+                <button type="button" onClick={this.refreshPage}>
+                  Next question
+                </button>
+              </div>
+            ) : null
+          ) : (
+            <div>
+              <div>{this.state.displayMessage}</div>
+              <button type="button" onClick={this.refreshPage}>
+                Next question
+              </button>
+            </div>
+          )
+        ) : (
+          <div>
+            <div>Question:</div>
+            <div>
+              <br />
+              {this.props.trivia[0] ? (
+                <div>{this.props.trivia[0].question}</div>
+              ) : null}
+            </div>
+
+            <form onSubmit={this.handleSubmit}>
+              <label htmlFor="search">Answer:</label>
+              <input ref="answerName" onChange={this.handleChange} />
+              <button type="submit">Guess!</button>
+            </form>
+            <button onClick={this.handleShowAnswer}>Show answer</button>
+          </div>
+        )}
       </div>
     );
   }
